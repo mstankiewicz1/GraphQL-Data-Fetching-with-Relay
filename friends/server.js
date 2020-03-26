@@ -1,45 +1,23 @@
 import express from 'express';
 import graphqlHTTP from 'express-graphql';
 import schema from './schema';
+import path from 'path';
+import webpack from 'webpack';
+import WebPackDevServer from 'webpack-dev-server';
+import { schema } from './data/database';
 
-const app = express();
 
-app.get('/', (req, res) => {
-    res.send('GraphQL & Relay modern is cool!!!');
-});
+const APP_PORT = 3000;
+const GRAPHQL_PORT = 8080;
+ 
+//GraphQL server
+const graphQLServer = express();
 
-class Friend {
-    constructor(id, {firstName, lastName, gender, language, email}) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.gender = gender;
-        this.language = language;
-        this.email = email;
-    }
-}
 
-const friendDatabase = {};
-
-const global = { 
-    getFriend: ({id}) => {
-        return new Friend(id, friendDatabase[id]);
-    },
-    createFriend: ({input}) => {
-        let id = require('crypto').randomBytes(10).toString('hex');
-        friendDatabase[id] = input;
-        return new Friend(id, input);
-    },
-    updateFriend: ({id, input}) => {
-        friendDatabase[id] = input;
-        return new Friend(id, input);
-    }
-};
-
-app.use('/graphql', graphqlHTTP({
+graphQLServer.use('/', graphqlHTTP({
     schema: schema,
-    rootValue: global,
+    pretty: true,
     graphiql: true,
 }));
 
-app.listen(8080, () => console.log('Running server on localhost:8080/graphql'));
+graphQLServer.listen(GRAPHQL_PORT, () => console.log(`GraphQL server on localhost:${GRAPHQL_PORT}`));

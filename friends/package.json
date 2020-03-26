@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "babel-node ./server.js"
+    "start": "babel-node ./server.js",
+    "relay": "relay-compiler --src ./src --schema ./data/schema.graphql"
   },
   "author": "",
   "license": "ISC",
@@ -12,12 +13,25 @@
     "@babel/cli": "^7.8.4",
     "@babel/preset-es2015": "^7.0.0-beta.53",
     "babel-cli": "^6.26.0",
-    "babel-preset-stage-0": "^6.24.1"
+    "babel-preset-stage-0": "^6.24.1",
+    "relay-compiler": "^9.0.0"
   },
   "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-relay": "^9.0.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-runtime": "^6.26.0",
+    "classnames": "^2.2.6",
     "express": "^4.17.1",
     "express-graphql": "^0.9.0",
     "graphql": "^14.6.0",
-    "graphql-express": "^2.0.1"
+    "graphql-express": "^2.0.1",
+    "graphql-relay": "^0.6.0",
+    "react-relay": "^9.0.0",
+    "webpack": "^1.13.2",
+    "webpack-dev-server": "^1.16.1",
+    "whatwg-fetch": "^3.0.0"
   }
 }
