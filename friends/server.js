@@ -5,26 +5,41 @@ import schema from './schema';
 const app = express();
 
 app.get('/', (req, res) => {
-    res.send('GraphQL & Relay Modern is cool!');
+    res.send('GraphQL & Relay modern is cool!!!');
 });
 
-
-const root = { friend: () => {
-    return {
-        "id": 12345678,
-        "firstName": "Marek",
-        "lastName": "Stankiewicz",
-        "gender": "Male",
-        "language": "Polish",
-        "email": "fakeemail@gmail.com"
+class Friend {
+    constructor(id, {firstName, lastName, gender, language, email}) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.language = language;
+        this.email = email;
     }
-}};
+}
+
+const friendDatabase = {};
+
+const global = { 
+    getFriend: ({id}) => {
+        return new Friend(id, friendDatabase[id]);
+    },
+    createFriend: ({input}) => {
+        let id = require('crypto').randomBytes(10).toString('hex');
+        friendDatabase[id] = input;
+        return new Friend(id, input);
+    },
+    updateFriend: ({id, input}) => {
+        friendDatabase[id] = input;
+        return new Friend(id, input);
+    }
+};
 
 app.use('/graphql', graphqlHTTP({
     schema: schema,
-    rootValue: root,
-    graphiql: true
+    rootValue: global,
+    graphiql: true,
 }));
 
-
-app.listen(8080, () => console.log('Running server on localhost:8080/graphQL'));
+app.listen(8080, () => console.log('Running server on localhost:8080/graphql'));
