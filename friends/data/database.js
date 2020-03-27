@@ -1,10 +1,9 @@
 import data from './data.json';
 
+class User {}
+class Friend {}
 
-class User {};
-class Friend {};
-
-//Mock Data
+// Mock data
 const viewer = new User();
 viewer.id = '1';
 viewer.name = 'me';
@@ -21,10 +20,10 @@ const friends = data.map((obj) => {
 });
 
 module.exports = {
-    getUser: (id) => id === viewer.id ? viewer: null,
+    getUser: (id) => id === viewer.id ? viewer : null,
     getViewer: () => viewer,
     getFriend: (id) => friends.find(w => w.id == id),
     getFriends: () => friends,
     User,
     Friend,
-}
+};

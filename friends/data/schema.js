@@ -9,7 +9,7 @@ import {
     connectionDefinitions,
     connectionFromArray,
     fromGlobalId,
-    GlobalIdField,
+    globalIdField,
     nodeDefinitions,
     toGlobalId,
 } from 'graphql-relay';
@@ -26,21 +26,21 @@ import {
 const {nodeInterface, nodeField} = nodeDefinitions(
     (globalId) => {
         const {type, id} = fromGlobalId(globalId);
-        if (type === 'Friend'){
+        if (type === 'Friend') {
             return getFriend(id);
-        }else if ( type === 'User') {
+        } else if (type === 'User') {
             return getUser(id);
-        } 
+        }
         return null
     },
-        (obj) => {
-            if (obj instanceof Friend){
-                return GraphQLFriend;
-            } else if (obj instanceof User){
-                return GraphQLUser;
-            }
-            return null;
+    (obj) => {
+        if (obj instanceof Friend) {
+            return GraphQLFriend;
+        } else if (obj instanceof User) {
+            return GraphQLUser;
         }
+        return null;
+    }
 );
 
 const GraphQLUser = new GraphQLObjectType({
@@ -61,31 +61,31 @@ const GraphQLFriend = new GraphQLObjectType({
     fields: () => ({
         id: globalIdField('Friend'),
         firstName: {
-            type: GraphQLString
+            type: GraphQLString,
         },
         lastName: {
-            type: GraphQLString
+            type: GraphQLString,
         },
         gender: {
-            type: GraphQLString
+            type: GraphQLString,
         },
         language: {
-            type: GraphQLString
-        },  
+            type: GraphQLString,
+        },
         email: {
-            type: GraphQLString
+            type: GraphQLString,
         },
         image: {
-            type: GraphQLString
+            type: GraphQLString,
         },
     }),
     interface: [nodeInterface],
-});
+}); 
 
 const { connectionType: friendsConnection } = 
     connectionDefinitions({ name: 'Friend', nodeType: GraphQLFriend });
 
-const Query = GraphQLObjectType({
+const Query = new GraphQLObjectType({
     name: 'Query',
     fields: () => ({
         node: nodeField,
