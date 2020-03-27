@@ -1,6 +1,5 @@
 import express from 'express';
 import graphqlHTTP from 'express-graphql';
-import schema from './schema';
 import path from 'path';
 import webpack from 'webpack';
 import WebPackDevServer from 'webpack-dev-server';
@@ -21,3 +20,29 @@ graphQLServer.use('/', graphqlHTTP({
 }));
 
 graphQLServer.listen(GRAPHQL_PORT, () => console.log(`GraphQL server on localhost:${GRAPHQL_PORT}`));
+
+//Relay app
+
+const compiler = webpack({
+    entry: ['whatwg-fetch', path.resolve(__dirname, src, 'App.js')],
+    module: {
+        loaders: [
+                    {
+                        exclude: /node_modules/,
+                        loader: 'babel-loader',
+                        test: /\.js$/,
+                    }
+                ]
+    },
+    output: {filename: 'App.js', path: '/'}
+});
+
+const app = new WebPackDevServer(compiler, {
+    contentBase: '/public/',
+    proxy: {'/graphql': `http://localhost:${APP_PORT}`},
+    publicPath: '/src/',
+    stats: {colors: true},
+});
+
+app.use('/', express.static(path.resolve(__dirname, 'public')));
+app.listen(APP_PORT, () => console.log(`App in now running on localhost:${APP_PORT}`));
