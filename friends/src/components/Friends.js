@@ -7,11 +7,18 @@ class Friends extends Component {
     render() {
             return (
                     <div>
-                        <div className="row">
-                            <h1>Friends</h1>
-                            <FriendsList viewer={this.props.viewer}/>
-                        </div>
+                    <div className="navbar-fixed">
+                        <nav className="grey darken-4">
+                            <div className="nav-wrapper">
+                                <a href="#" className="brand-logo center">Friends</a>
+                            </div>
+                        </nav> 
                     </div>
+                            <div>
+                                <FriendsList viewer={this.props.viewer}/>
+                            </div>
+                    </div>
+                    
             )
     }
 }
